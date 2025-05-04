@@ -1,0 +1,29 @@
+{
+  "name": "valorant-agents-api",
+  "version": "1.0.0",
+  "description": "gestor de agentes de valorant",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LukasMartc/valorant-agents-api.git"
+  },
+  "keywords": [
+    "Node.js",
+    "express",
+    "json"
+  ],
+  "author": "Lukas Martinez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LukasMartc/valorant-agents-api/issues"
+  },
+  "homepage": "https://github.com/LukasMartc/valorant-agents-api#readme",
+  "dependencies": {
+    "express": "5.1.0"
+  }
+}
