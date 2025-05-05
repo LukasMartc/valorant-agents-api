@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Sage",
+    "role": "Centinela",
+    "skills": [
+      "Orbe de relentización", 
+      "Orbe curativo", 
+      "Orbe de barrera", 
+      "Resurrección"
+    ]
+  },
+  {
+    "name": "Omen",
+    "role": "Controlador",
+    "skills": [
+      "Paranoia", 
+      "Velo tenebroso", 
+      "Aparición tenebrosa", 
+      "Desde las sombras"
+    ]
+  }
+]
