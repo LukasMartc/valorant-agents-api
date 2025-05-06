@@ -3,9 +3,9 @@
     "name": "Sage",
     "role": "Centinela",
     "skills": [
-      "Orbe de relentización", 
-      "Orbe curativo", 
-      "Orbe de barrera", 
+      "Orbe de relentización",
+      "Orbe curativo",
+      "Orbe de barrera",
       "Resurrección"
     ]
   },
@@ -13,10 +13,20 @@
     "name": "Omen",
     "role": "Controlador",
     "skills": [
-      "Paranoia", 
-      "Velo tenebroso", 
-      "Aparición tenebrosa", 
+      "Paranoia",
+      "Velo tenebroso",
+      "Aparición tenebrosa",
       "Desde las sombras"
+    ]
+  },
+  {
+    "name": "Astra",
+    "role": "Controlador",
+    "skills": [
+      "Pulso estelar",
+      "Nebulosa",
+      "Pozo gravitacional",
+      "Modo astral / División cósmica"
     ]
   }
 ]

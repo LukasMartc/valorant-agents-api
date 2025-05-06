@@ -24,7 +24,8 @@
   },
   "homepage": "https://github.com/LukasMartc/valorant-agents-api#readme",
   "dependencies": {
-    "express": "5.1.0"
+    "express": "5.1.0",
+    "express-validator": "7.2.1"
   },
   "devDependencies": {
     "colors": "^1.4.0"
