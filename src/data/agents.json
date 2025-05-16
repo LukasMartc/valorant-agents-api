@@ -1,32 +1,22 @@
 [
   {
-    "name": "Sage",
-    "role": "Centinela",
+    "name": "skye",
+    "role": "iniciador",
     "skills": [
-      "Orbe de relentización",
-      "Orbe curativo",
-      "Orbe de barrera",
-      "Resurrección"
+      "Precursor",
+      "Luz Guía",
+      "Reforestación",
+      "Buscadores"
     ]
   },
   {
-    "name": "Omen",
-    "role": "Controlador",
+    "name": "omen",
+    "role": "controlador",
     "skills": [
-      "Paranoia",
-      "Velo tenebroso",
-      "Aparición tenebrosa",
-      "Desde las sombras"
-    ]
-  },
-  {
-    "name": "Astra",
-    "role": "Controlador",
-    "skills": [
-      "Pulso estelar",
-      "Nebulosa",
-      "Pozo gravitacional",
-      "Modo astral / División cósmica"
+      "paranoia",
+      "velo tenebroso",
+      "aparición tenebrosa",
+      "desde las sombras"
     ]
   }
 ]
