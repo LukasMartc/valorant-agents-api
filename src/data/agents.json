@@ -18,5 +18,15 @@
       "aparición tenebrosa",
       "desde las sombras"
     ]
+  },
+  {
+    "name": "astra",
+    "role": "Controlador",
+    "skills": [
+      "pulso estelar",
+      "nebulosa",
+      "pozo gravitacional",
+      "modo astral / división cósmica"
+    ]
   }
 ]
