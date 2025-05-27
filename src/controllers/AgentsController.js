@@ -23,7 +23,7 @@ export class AgentsController {
       const agents = JSON.parse(data)
 
       const { name } = req.body
-      const agentExists = agents.some(agent => agent.name === name)
+      const agentExists = agents.some(agent => agent.name === name.toLowerCase())
 
       if(agentExists) {
         return res.status(409).json({ msg: `El agente ${name} ya existe` })
@@ -84,6 +84,30 @@ export class AgentsController {
     } catch (err) {
       console.log(colors.red(err))
       return res.status(500).json({ error: 'Error al actualizar el agente' })
+    }
+  }
+
+  static deleteAgent = async (req, res) => {
+    const { name } = req.params
+    const agentsPath = `${process.cwd()}/src/data/agents.json`
+
+    try {
+      const data = await fs.readFile(agentsPath, { encoding: 'utf-8' })
+      const agents = JSON.parse(data)
+
+      const index = agents.findIndex(a => a.name === name.toLowerCase())
+
+      if(index === -1) {
+        return res.status(404).json({ msg: 'El agente no existe' })
+      }
+
+      agents.splice(index, 1)
+
+      await fs.writeFile(agentsPath, JSON.stringify(agents, null, 2))
+      return res.status(200).json({ msg: 'Agente eliminado correctamente' })
+    } catch (err) {
+      console.log(colors.red(err))
+      return res.status(500).json({ error: 'Error al eliminar el agente' })
     }
   }
 }
