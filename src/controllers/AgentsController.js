@@ -1,5 +1,19 @@
 import fs from 'node:fs/promises'
 import colors from 'colors'
+import { createAgentService } from '../services/agents.service.js'
+
+export const createAgent = async (req, res) => {
+  try {
+    const newAgent = await createAgentService(req.body)
+    return res.status(201).json({
+      msg: `Agente ${newAgent.name} creado correctamente`,
+      agent: newAgent
+    })
+  } catch (error) {
+    console.log(colors.red(error))
+    return res.status(409).json({ error: error.message })
+  }
+}
 
 export class AgentsController {
   static getAgents = async (req, res) => {
@@ -12,30 +26,6 @@ export class AgentsController {
     } catch (err) {
       console.log(colors.red(err))
       return res.status(500).json({ error: 'Error al obtener agentes' })
-    }
-  }
-
-  static createAgent = async (req, res) => {
-    const agentsPath = `${process.cwd()}/src/data/agents.json`
-
-    try {
-      const data = await fs.readFile(agentsPath, { encoding: 'utf-8' })
-      const agents = JSON.parse(data)
-
-      const { name } = req.body
-      const agentExists = agents.some(agent => agent.name === name.toLowerCase())
-
-      if(agentExists) {
-        return res.status(409).json({ msg: `El agente ${name} ya existe` })
-      }
-
-      agents.push(req.body)
-      await fs.writeFile(agentsPath, JSON.stringify(agents, null, 2))
-
-      return res.status(201).json({ msg: `Agente ${name} creado correctamente` })
-    } catch (err) {
-      console.log(colors.red(err))
-      return res.status(500).json({ error: 'Hubo un error al crear el agente' })
     }
   }
 

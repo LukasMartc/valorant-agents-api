@@ -24,7 +24,7 @@ const agentSchema = new Schema({
       {
         name: { type: String, required: true, trim: true },
         type: { type: String, required: true, trim: true, enum: ['básica', 'firma', 'definitiva'] },
-        description: { type: String, required: true, trim: true, maxLength: 300 },
+        description: { type: String, required: true, trim: true, maxLength: 500 },
         cost: {
           type: Number, required: true, default: 0, min: 0,
           validate: {
