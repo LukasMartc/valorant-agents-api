@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import colors from 'colors'
-import { createAgentService } from '../services/agents.service.js'
+import { createAgentService, getAllAgentsService } from '../services/agents.service.js'
 
 export const createAgent = async (req, res) => {
   try {
@@ -11,7 +11,6 @@ export const createAgent = async (req, res) => {
     })
   } catch (error) {
     console.log(colors.red(error))
-
     const message = error.errors
       ? // Si existen errores de validación de Mongoose (error.errors):
         [...new Set( // Elimina mensajes duplicados usando Set()
@@ -23,20 +22,17 @@ export const createAgent = async (req, res) => {
   }
 }
 
-export class AgentsController {
-  static getAgents = async (req, res) => {
-    const agentsPath = `${process.cwd()}/src/data/agents.json`
-
-    try {
-      const data = await fs.readFile(agentsPath, { encoding: 'utf-8' })
-      const agents = JSON.parse(data)
-      return res.status(200).json(agents)
-    } catch (err) {
-      console.log(colors.red(err))
-      return res.status(500).json({ error: 'Error al obtener agentes' })
-    }
+export const getAllAgents = async (req, res) => {
+  try {
+    const agents = await getAllAgentsService()
+    return res.status(200).json(agents)
+  } catch (error) {
+    console.log(colors.red(error))
+    return res.status(500).json({ error: 'Error al obtener agentes' })
   }
+}
 
+export class AgentsController {
   static getAgent = async (req, res) => {
     const { name } = req.params
     const agentsPath = `${process.cwd()}/src/data/agents.json`

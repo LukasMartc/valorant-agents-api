@@ -1,9 +1,5 @@
 import Agent from "../models/agent.model.js";
 
-export const getAgentService = async () => {
-
-}
-
 export const createAgentService = async (agentData) => {
     const { name } = agentData
 
@@ -17,4 +13,9 @@ export const createAgentService = async (agentData) => {
     const agent = new Agent(agentData)
     await agent.save()
     return agent
+}
+
+export const getAllAgentsService = async () => {
+    const agents = await Agent.find()
+    return agents
 }

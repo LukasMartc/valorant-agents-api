@@ -1,12 +1,12 @@
 import { Router } from 'express'
 import { body } from 'express-validator'
-import { AgentsController } from '../controllers/AgentsController.js'
-import { createAgent } from '../controllers/AgentsController.js'
+import { AgentsController } from '../controllers/agents.controller.js'
+import { createAgent, getAllAgents } from '../controllers/agents.controller.js' 
 import { handleInputErrors } from '../middleware/validation.js'
 
 const router = Router()
 
-router.get('/', AgentsController.getAgents)
+router.get('/', getAllAgents)
 
 router.post('/',
   body('name')
