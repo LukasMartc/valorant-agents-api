@@ -29,7 +29,7 @@ const agentSchema = new Schema({
           type: Number, required: true, default: 0, min: 0,
           validate: {
             validator: function(value) {
-              if (this.type === 'básica') return value >= 0
+              if (this.type === 'básica') return value > 0
               return value === 0
             },
             message: 'Las habilidades "firma" y "definitiva" deben costar 0'

@@ -11,7 +11,15 @@ export const createAgent = async (req, res) => {
     })
   } catch (error) {
     console.log(colors.red(error))
-    return res.status(409).json({ error: error.message })
+
+    const message = error.errors
+      ? // Si existen errores de validación de Mongoose (error.errors):
+        [...new Set( // Elimina mensajes duplicados usando Set()
+          Object.values(error.errors) // Convierte los objetos de error en un array de valores
+            .map(err => err.message) // Extrae solo el 'message' de cada error
+        )].join(', ') // Convierte el array en un string separado por comas
+      : error.message // Si no hay errores específicos (error.errors no existe), usa el mensaje general:
+    return res.status(error.status || 500).json({ error: message })
   }
 }
 
