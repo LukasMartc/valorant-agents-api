@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import colors from 'colors'
-import { createAgentService, getAllAgentsService } from '../services/agents.service.js'
+import { createAgentService, getAllAgentsService, 
+  getAgentService } from '../services/agents.service.js'
 
 export const createAgent = async (req, res) => {
   try {
@@ -24,36 +25,31 @@ export const createAgent = async (req, res) => {
 
 export const getAllAgents = async (req, res) => {
   try {
-    const agents = await getAllAgentsService()
+    const agents = await getAllAgentsService(req.query)
     return res.status(200).json(agents)
   } catch (error) {
     console.log(colors.red(error))
-    return res.status(500).json({ error: 'Error al obtener agentes' })
+    const message = error.errors
+      ? Object.values(error.errors).map(err => err.message).join(', ')
+      : error.message
+    return res.status(error.status || 500).json({ error: message })
+  }
+}
+
+export const getAgent = async (req, res) => {
+  try {
+    const agent = await getAgentService(req.params)
+    return res.status(200).json(agent)
+  } catch (error) {
+    console.log(colors.red(error))
+    const message = error.errors
+      ? Object.values(error.errors).map(err => err.message).join(', ')
+      : error.message
+    return res.status(error.status || 500).json({ error: message })
   }
 }
 
 export class AgentsController {
-  static getAgent = async (req, res) => {
-    const { name } = req.params
-    const agentsPath = `${process.cwd()}/src/data/agents.json`
-
-    try {
-      const data = await fs.readFile(agentsPath, { encoding: 'utf-8' })
-      const agents = JSON.parse(data)
-
-      const agent = agents.find(a => a.name === name.toLowerCase())
-      
-      if(!agent) {
-        return res.status(404).json({ msg: 'El agente no existe' })
-      }
-
-      return res.status(200).json(agent)
-    } catch (err) {
-      console.log(colors.red(err))
-      return res.status(500).json({ error: 'Error al obtener el agente' })
-    }
-  }
-
   static updateAgent = async (req, res) => {
     const { name } = req.params
     const agentsPath = `${process.cwd()}/src/data/agents.json`

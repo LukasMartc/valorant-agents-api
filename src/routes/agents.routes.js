@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { body } from 'express-validator'
 import { AgentsController } from '../controllers/agents.controller.js'
-import { createAgent, getAllAgents } from '../controllers/agents.controller.js' 
+import { createAgent, getAllAgents, getAgent } from '../controllers/agents.controller.js' 
 import { handleInputErrors } from '../middleware/validation.js'
 
 const router = Router()
@@ -41,7 +41,7 @@ router.post('/',
   handleInputErrors,
   createAgent)
   
-router.get('/:name', AgentsController.getAgent)
+router.get('/:name', getAgent)
 
 router.patch('/:name',
   body('name')
