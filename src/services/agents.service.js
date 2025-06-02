@@ -15,8 +15,8 @@ export const createAgentService = async (agentData) => {
   return agent
 }
 
-export const getAllAgentsService = async (agentData) => {
-  const { search, role } = agentData
+export const getAllAgentsService = async (agentFilters) => {
+  const { search, role } = agentFilters
 
   const filter = {}
 
@@ -39,8 +39,8 @@ export const getAllAgentsService = async (agentData) => {
   return agents
 }
 
-export const getAgentService = async (agentData) => {
-  const { name } = agentData
+export const getAgentService = async (nameAgent) => {
+  const { name } = nameAgent
 
   const agentFound = await Agent.findOne({ name: name.toLowerCase() })
   if (!agentFound) {
@@ -50,4 +50,17 @@ export const getAgentService = async (agentData) => {
   }
 
   return agentFound
+}
+
+export const deleteAgentService = async (nameAgent) => {
+  const { name } = nameAgent
+ 
+  const agentExists = await Agent.findOne({ name: name.toLowerCase() })
+  if (!agentExists) {
+    const error = new Error('El agente no existe')
+    error.status = 404
+    throw error
+  }
+
+  await Agent.deleteOne({ name: name.toLowerCase() })
 }

@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import colors from 'colors'
 import { createAgentService, getAllAgentsService, 
-  getAgentService } from '../services/agents.service.js'
+  getAgentService, deleteAgentService} from '../services/agents.service.js'
 
 export const createAgent = async (req, res) => {
   try {
@@ -40,6 +40,19 @@ export const getAgent = async (req, res) => {
   try {
     const agent = await getAgentService(req.params)
     return res.status(200).json(agent)
+  } catch (error) {
+    console.log(colors.red(error))
+    const message = error.errors
+      ? Object.values(error.errors).map(err => err.message).join(', ')
+      : error.message
+    return res.status(error.status || 500).json({ error: message })
+  }
+}
+
+export const deleteAgent = async (req, res) => {
+  try {
+    await deleteAgentService(req.params)
+    return res.status(200).json({ msg: 'Agente eliminado correctamente' })
   } catch (error) {
     console.log(colors.red(error))
     const message = error.errors
