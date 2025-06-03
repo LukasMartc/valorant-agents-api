@@ -64,3 +64,19 @@ export const deleteAgentService = async (nameAgent) => {
 
   await Agent.deleteOne({ name: name.toLowerCase() })
 }
+
+export const updateAgentService = async (nameAgent, newData) => {
+  const { name } = nameAgent
+
+  const agentExists = await Agent.findOne({ name: name.toLowerCase() })
+  if (!agentExists) {
+    const error = new Error('El agente no existe')
+    error.status = 404
+    throw error
+  }
+
+  const agentUpdated = await Agent.findOneAndUpdate({ name: name.toLowerCase() }, newData, {
+    new: true
+  })
+  return agentUpdated
+}

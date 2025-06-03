@@ -1,8 +1,7 @@
 import { Router } from 'express'
 import { body } from 'express-validator'
-import { AgentsController } from '../controllers/agents.controller.js'
 import { createAgent, getAllAgents, getAgent,
-  deleteAgent } from '../controllers/agents.controller.js' 
+  deleteAgent, updateAgent } from '../controllers/agents.controller.js' 
 import { handleInputErrors } from '../middleware/validation.js'
 
 const router = Router()
@@ -44,27 +43,42 @@ router.post('/',
   
 router.get('/:name', getAgent)
 
+router.delete('/:name', deleteAgent)
+
 router.patch('/:name',
   body('name')
     .optional()
-    .toLowerCase()
-    .notEmpty().withMessage('El nombre del agente está vacio'),
+    .notEmpty().withMessage('El nombre del agente está vacio')
+    .toLowerCase(),
+  body('description')
+    .optional()
+    .notEmpty().withMessage('La descripción del agente está vacio')
+    .toLowerCase(),
   body('role')
     .optional()
-    .toLowerCase()
     .notEmpty().withMessage('El rol del agente está vacio')
     .isIn(['duelista', 'controlador', 'iniciador', 'centinela'])
-    .withMessage('El rol del agente no es correcto'),
+    .withMessage('El rol del agente no es correcto')
+    .toLowerCase(),
   body('skills')
     .optional()
     .isArray({ min: 4, max: 4 }).withMessage('Debes incluir 4 habilidades'),
-  body('skills.*')
-    .isString().withMessage('Cada habilidad debe ser un texto')
-    .customSanitizer(value => value.toLowerCase())
-    .notEmpty().withMessage('La habilidad está vacia'),
+  body('skills.*.name')
+    .notEmpty().withMessage('El nombre de la habilidad esta vacio')
+    .toLowerCase(),
+  body('skills.*.type')
+    .notEmpty().withMessage('El tipo de habilidad esta vacio')
+    .toLowerCase()
+    .isIn(['básica', 'firma', 'definitiva'])
+    .withMessage('El tipo de habilidad no es válida'),
+  body('skills.*.description')
+    .notEmpty().withMessage('La descripción de la habilidad está vacía')
+    .toLowerCase()
+    .isLength({ max: 500 }).withMessage('La descripción de la habilidad no puede superar los 500 caracteres'),
+  body('skills.*.cost')
+  // No se usa notEmpy ya que valida strings y arrays
+    .isInt({ min: 0 }).withMessage('El costo debe ser un número mayor o igual a 0'),
   handleInputErrors,
-  AgentsController.updateAgent)
-
-router.delete('/:name', deleteAgent)
+  updateAgent)
 
 export default router

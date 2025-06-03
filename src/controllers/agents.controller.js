@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import colors from 'colors'
 import { createAgentService, getAllAgentsService, 
-  getAgentService, deleteAgentService} from '../services/agents.service.js'
+  getAgentService, deleteAgentService, updateAgentService} from '../services/agents.service.js'
 
 export const createAgent = async (req, res) => {
   try {
@@ -62,55 +62,15 @@ export const deleteAgent = async (req, res) => {
   }
 }
 
-export class AgentsController {
-  static updateAgent = async (req, res) => {
-    const { name } = req.params
-    const agentsPath = `${process.cwd()}/src/data/agents.json`
-
-    try {
-      const data = await fs.readFile(agentsPath, { encoding: 'utf-8' })
-      const agents = JSON.parse(data)
-
-      const index = agents.findIndex(a => a.name === name.toLowerCase())
-
-      if(index === -1) {
-        return res.status(404).json({ msg: 'El agente no existe' })
-      }
-
-      agents[index] = {
-        ...agents[index],
-        ...req.body
-      }
-
-      await fs.writeFile(agentsPath, JSON.stringify(agents, null, 2))
-      return res.status(200).json({ msg: 'Agente actualizado', agent: agents[index] })
-    } catch (err) {
-      console.log(colors.red(err))
-      return res.status(500).json({ error: 'Error al actualizar el agente' })
-    }
-  }
-
-  static deleteAgent = async (req, res) => {
-    const { name } = req.params
-    const agentsPath = `${process.cwd()}/src/data/agents.json`
-
-    try {
-      const data = await fs.readFile(agentsPath, { encoding: 'utf-8' })
-      const agents = JSON.parse(data)
-
-      const index = agents.findIndex(a => a.name === name.toLowerCase())
-
-      if(index === -1) {
-        return res.status(404).json({ msg: 'El agente no existe' })
-      }
-
-      agents.splice(index, 1)
-
-      await fs.writeFile(agentsPath, JSON.stringify(agents, null, 2))
-      return res.status(200).json({ msg: 'Agente eliminado correctamente' })
-    } catch (err) {
-      console.log(colors.red(err))
-      return res.status(500).json({ error: 'Error al eliminar el agente' })
-    }
+export const updateAgent = async (req, res) => {
+  try {
+    const agentUpdated = await updateAgentService(req.params, req.body)
+    return res.status(200).json({ msg: 'Agente actualizado', agent: agentUpdated })
+  } catch (error) {
+    console.log(colors.red(error))
+    const message = error.errors
+      ? Object.values(error.errors).map(err => err.message).join(', ')
+      : error.message
+    return res.status(error.status || 500).json({ error: message })
   }
 }
