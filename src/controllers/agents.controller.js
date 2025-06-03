@@ -1,4 +1,3 @@
-import fs from 'node:fs/promises'
 import colors from 'colors'
 import { createAgentService, getAllAgentsService, 
   getAgentService, deleteAgentService, updateAgentService} from '../services/agents.service.js'
