@@ -3,12 +3,14 @@ import { body } from 'express-validator'
 import { createAgent, getAllAgents, getAgent,
   deleteAgent, updateAgent } from '../controllers/agents.controller.js' 
 import { handleInputErrors } from '../middleware/validation.js'
+import { authenticate } from '../middleware/auth.js'
 
 const router = Router()
 
 router.get('/', getAllAgents)
 
 router.post('/',
+  authenticate,
   body('name')
     .toLowerCase()
     .notEmpty().withMessage('El nombre del agente está vacio'),
@@ -43,9 +45,10 @@ router.post('/',
   
 router.get('/:name', getAgent)
 
-router.delete('/:name', deleteAgent)
+router.delete('/:name', authenticate, deleteAgent)
 
 router.patch('/:name',
+  authenticate,
   body('name')
     .optional()
     .notEmpty().withMessage('El nombre del agente está vacio')

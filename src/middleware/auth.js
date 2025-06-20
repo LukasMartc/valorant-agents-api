@@ -2,20 +2,18 @@ import jwt from 'jsonwebtoken'
 import User from '../models/user.model.js'
 
 export const authenticate = async (req, res, next) => {
-   const bearer = req.headers.authorization
+  const bearer = req.headers.authorization
 
   if(!bearer) {
     const error = new Error('No autorizado')
-    error.status = 401
-    throw error
+    return res.status(401).json({ error: error.message })
   }
 
   // destructuración de array, el bearer.split(' ') convierte el bearer en un array
   const [, token] = bearer.split(' ')
   if(!token) {
     const error = new Error('No autorizado')
-    error.status = 401
-    throw error
+    return res.status(401).json({ error: error.message })
   }
 
   try {
